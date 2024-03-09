@@ -8,7 +8,7 @@ st.set_page_config(
     initial_sidebar_state="expanded")
 
 # Load the data
-url = 'https://raw.githubusercontent.com/feverlash/Analisis-Data/d4f2afc8974492315841fd0f7120133dd50bfb8c/Bike-sharing-dataset/cleaned_day.csv'
+url = 'https://raw.githubusercontent.com/feverlash/Analisis-Data/1b784470df03a8e53000ea6a7393bf2fbafc7919/Bike-sharing-dataset/cleaned_day.csv'
 data = pd.read_csv(url)
 
 # Sidebar with options
@@ -17,49 +17,71 @@ st.sidebar.title('**Pilihan Pertanyaan Bisnis**')
 st.sidebar.markdown("**Pada proyek ini saya menganalisis dataset sewa sepeda harian untuk menjawab beberapa pertanyaan di bawah ini**")
 question = st.sidebar.selectbox('Pilih Pertanyaan:', ['Pertanyaan 1', 'Pertanyaan 2', 'Pertanyaan 3', 'Pertanyaan 4'])
 
-# Function to visualize correlation between weather condition and daily bike rentals
-def visualize_correlation_1(data):
-    corr_matrix = data[['weathersit', 'cnt']].corr()
-    fig = px.imshow(corr_matrix.values, 
-                    labels=dict(color="Correlation"),
-                    x=['Kondisi Cuaca', 'Jumlah Sewa Harian'], 
-                    y=['Kondisi Cuaca', 'Jumlah Sewa Harian'], 
-                    color_continuous_scale='viridis')
-    
-    for i in range(len(corr_matrix)):
-        for j in range(len(corr_matrix)):
-            fig.add_annotation(x=i, y=j, 
-                               text=f'{corr_matrix.iloc[i, j]:.2f}', 
-                               showarrow=False, 
-                               font=dict(color='black' if abs(corr_matrix.iloc[i, j]) > 0.5 else 'white'))
-    
-    fig.update_layout(title='Korelasi antara Jumlah Penyewaan Sepeda Harian dengan Kondisi Cuaca', font=dict(size=11))
+#Fungsi 1
+import plotly.express as px
+
+import plotly.express as px
+import streamlit as st
+
+def visualize_season_counts(data):
+    data['season'] = data['season'].map({
+        'Spring': 'Spring',
+        'Summer': 'Summer',
+        'Fall': 'Fall',
+        'Winter': 'Winter'
+    })
+
+    season_counts = data.groupby('season')['total_rental'].sum().reset_index()
+
+    color_map = {'Spring': '#4CAF50', 
+                 'Summer': '#FFC107',  
+                 'Fall': '#FF5722', 
+                 'Winter': '#2196F3'}
+
+    fig = px.bar(season_counts, x='season', y='total_rental', 
+                 title='Total Jumlah Penyewaan Sepeda Berdasarkan Musim',
+                 labels={'season': 'Musim', 'total_rental': 'Total Penyewaan Sepeda'},
+                 color='season', color_discrete_map=color_map)
+
+    fig.update_xaxes(title_text='Musim')
+    fig.update_yaxes(title_text='Total Penyewaan Sepeda')
     st.plotly_chart(fig)
 
-# Function to visualize correlation between day and daily bike rentals
-def visualize_correlation_2(data):
-    corr_matrix = data[['workingday', 'holiday', 'cnt']].corr()
-    fig = px.imshow(corr_matrix.values, 
-                    labels=dict(color="Correlation"),
-                    x=['Hari Kerja', 'Hari Libur', 'Jumlah Sewa Harian'], 
-                    y=['Hari Kerja', 'Hari Libur', 'Jumlah Sewa Harian'], 
-                    color_continuous_scale='viridis')
+#Fungsi 2
+def visualize_year_tren(data, year_2011, year_2012):
+    if not year_2011 and not year_2012:
+        st.write(":heavy_exclamation_mark: Silahkan pilih salah satu checkbox untuk menampilkan grafik :heavy_exclamation_mark:")
+        return
+
+    data['month'] = pd.Categorical(data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
     
-    for i in range(len(corr_matrix)):
-        for j in range(len(corr_matrix)):
-            fig.add_annotation(x=i, y=j, 
-                               text=f'{corr_matrix.iloc[i, j]:.2f}', 
-                               showarrow=False, 
-                               font=dict(color='black' if abs(corr_matrix.iloc[i, j]) > 0.5 else 'white'))
+    monthly_counts = data.groupby(by=["month","year"]).agg({"total_rental": "sum"}).reset_index()
+
+    fig = px.line(title="Jumlah sepeda yang disewakan berdasarkan Bulan dan Tahun",
+                  labels={"month": "Bulan", "total_rental": "Total Penyewaan Sepeda", "year": "Tahun"},
+                  markers=False)
+
+    if year_2011:
+        fig.add_scatter(x=monthly_counts[monthly_counts['year']==0]['month'], 
+                        y=monthly_counts[monthly_counts['year']==0]['total_rental'],
+                        mode='lines', name='2011', marker=dict(color='blue'))
     
-    fig.update_layout(title='Korelasi antara Jumlah Penyewaan Sepeda Harian dengan Hari Kerja dan Hari Libur', font=dict(size=11))
+    if year_2012:
+        fig.add_scatter(x=monthly_counts[monthly_counts['year']==1]['month'], 
+                        y=monthly_counts[monthly_counts['year']==1]['total_rental'],
+                        mode='lines', name='2012', marker=dict(color='green'))
+
+    fig.update_layout(xaxis_title=None, yaxis_title=None, legend_title="Tahun",
+                      width=800, height=500)
+    
     st.plotly_chart(fig)
 
 
-# Function to visualize bike rentals based on weather situation
+
+#Fungsi 3
 def visualize_weather_counts(data):
     # Menghitung jumlah penyewaan sepeda berdasarkan workingday
-    bike_rentals_per_weather = data.groupby('weathersit')['cnt'].sum().reset_index()
+    bike_rentals_per_weather = data.groupby('weather_cond')['total_rental'].sum().reset_index()
     bike_rentals_per_weather.columns = ['Weather Situation', 'Total Rentals']
     
     fig = px.bar(bike_rentals_per_weather, x='Weather Situation', y='Total Rentals', 
@@ -73,9 +95,9 @@ def visualize_weather_counts(data):
     fig.update_xaxes(tickvals=[1, 2, 3], ticktext=['1', '2', '3'])
     st.plotly_chart(fig)
 
-# Function to visualize bike rentals based on working day
+#Fungsi 4
 def visualize_workingday_counts(data):
-    workingday_counts = data.groupby('workingday')['cnt'].sum().reset_index()
+    workingday_counts = data.groupby('workingday')['total_rental'].sum().reset_index()
     workingday_counts.columns = ['Working Day', 'Counts']
     workingday_counts['Working Day'] = workingday_counts['Working Day'].map({0: 'Hari Libur', 1: 'Hari Kerja'})
     
@@ -91,16 +113,15 @@ def visualize_workingday_counts(data):
 st.title(':green[Analisis] Data Penyewaan Sepeda Harian :bar_chart:')
 
 if question == 'Pertanyaan 1':
-    st.write("### Bagaimana korelasi antara kondisi cuaca dengan jumlah penyewaan sepeda harian ?")
-    visualize_correlation_1(data)
+    st.write("### Bagaimana perbedaan pola penyewaan sepeda pada setiap musim?")
+    visualize_season_counts(data)
 elif question == 'Pertanyaan 2':
-    st.write("### Bagaimana korelasi antara hari libur, hari kerja, dan jumlah penyewaan sepeda harian ?")
-    visualize_correlation_2(data)
+    st.write("### Bagaimana tren jumlah total penyewaan sepeda dari bulan ke bulan selama periode 2011 dan 2012?")
+    year_2011 = st.checkbox('Tahun 2011', value=True)
+    year_2012 = st.checkbox('Tahun 2012', value=True)
+    visualize_year_tren(data, year_2011, year_2012)
 elif question == 'Pertanyaan 3':
     st.write("### Bagaimana perbedaan pola penyewaan sepeda antara setiap cuaca?")
-    st.write("- 1: Clear, Few clouds, Partly cloudy, Partly cloudy")
-    st.write("- 2: Mist + Cloudy, Mist + Broken clouds, Mist + Few clouds, Mist")
-    st.write("- 3: Light Snow, Light Rain + Thunderstorm + Scattered clouds, Light Rain + Scattered clouds")
     visualize_weather_counts(data)
 elif question == 'Pertanyaan 4':
     st.write("### Bagaimana perbedaan pola penyewaan sepeda antara hari kerja dan hari libur?")
