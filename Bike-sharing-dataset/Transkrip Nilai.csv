@@ -1,0 +1,109 @@
+No,Kode,Mata Kuliah,SKS,Kelompok,Jenis,Ke,Nilai
+1,UNU1000,"Agama Islam
+ Kelas: AI6",2,MPB,Wajib,1,A-
+2,MFF1011,"Fisika Dasar I
+ Kelas: FD4",3,MKB,Wajib,1,B+
+3,MII1201,"Pemrograman I
+ Kelas: PRG9",3,MKB,Wajib,1,B/C
+4,MKK1101,"Kimia Dasar I
+ Kelas: KD2",3,MKK,Wajib,,B
+5,MMM1101,"Kalkulus I
+ Kelas: KAL3",3,MKK,Wajib,1,C-
+6,MII1202,"Praktikum Pemrograman I
+ Kelas: MAT1",1,MKB,Wajib,1,A
+7,MMM1208,"Pengantar Logika Matematika
+ Kelas: MAT A",3,MKK,Wajib,1,D
+8,MMS1404,"Metode Statistika I
+ Kelas: SM A",3,MKB,Wajib,1,A/B
+9,MMM1102,"Kalkulus II
+ Kelas: 4",3,MKK,Wajib,1,B-
+10,MMM1001,"Bahasa Inggris
+ Kelas: MAT",2,MBB,Wajib,1,A
+11,MMM1202,"Aljabar Linear Elementer
+ Kelas: MIA B",3,MKK,Wajib,1,B
+12,MMM1106,"Geometri Analitik
+ Kelas: MAT A",3,MKK,Wajib,1,C/D
+13,UNU1010,"Pancasila
+ Kelas: MAT",2,MKK,Wajib,1,A/B
+14,MMM1204,"Teori Himpunan
+ Kelas: MAT A",2,MPB,Wajib,1,B
+15,MMM1206,"Matematika Diskrit I
+ Kelas: MAT A",2,MKK,Wajib,1,A-
+16,MMM1203,"Pengantar Struktur Aljabar I
+ Kelas: MAT A",3,MKB,Wajib,1,B-
+17,MMM2111,"Kalkulus Lanjut
+ Kelas: M;S A",2,,Wajib,1,C-
+18,MMM2207,"Matematika Diskrit II
+ Kelas: MAT A",2,,Pilihan,1,B+
+19,MMM2301,"Persamaan Diferensial Elementer
+ Kelas: MSIAB",3,,Wajib,1,B+
+20,MMM2312,"Program Linear
+ Kelas: MSIAB",3,,Wajib,1,B-
+21,MMM2401,"Pengantar Analisis Numerik
+ Kelas: MAT A",3,,Wajib,1,B+
+22,MMS2420,"Pengantar Statistika Matematika I
+ Kelas: SMIAB",3,,Wajib,1,B+
+23,MMM2110,"Kalkulus Multivariabel II
+ Kelas: MAT A",2,,Wajib,1,C
+24,MMM2112,"Fungsi Variabel Kompleks I
+ Kelas: MAT A",2,,Wajib,1,C/D
+25,MMM2116,"Pengantar Analisis I
+ Kelas: MAT A",3,,Wajib,1,D
+26,MMM2310,"Pengantar Persamaan Diferensial Parsial
+ Kelas: MAT A",3,,Wajib,1,C-
+27,MMM2402,"Matematika Komputasi
+ Kelas: MAT A",3,,Wajib,1,B-
+28,MMM2209,"Pengantar Kombinatorik
+ Kelas: MAT",3,,Pilihan,1,C
+29,MMS2483,"Pengantar Statistika Matematika II
+ Kelas: ST;MA",3,,Pilihan,1,B-
+30,MMM2109,"Kalkulus Multivariabel I
+ Kelas: MAT A",2,,Wajib,2,B/C
+31,UNU3000,"Kewarganegaraan
+ Kelas: MAT",2,,Wajib,1,A
+32,MMM3004,"Career in Mathematics
+ Kelas: MAT",1,,Wajib,1,A-
+33,MMM3102,"Pengantar Analisis II
+ Kelas: MAT A",3,,Wajib,1,C/D
+34,MMM3106,"Fungsi Variabel Kompleks II
+ Kelas: MAT A",2,,Wajib,1,C/D
+35,MMM3303,"Pengantar Model Matematika
+ Kelas: MAT A",3,,Wajib,1,A/B
+36,MMM3002,"Pengantar Proses Stokastik
+ Kelas: MSIAA",3,,Wajib,1,A/B
+37,MMM1106,"Geometri Analitik
+ Kelas: MAT A",3,,Wajib,1,C-
+38,MMM2202,"Aljabar Linear
+ Kelas: MAT A",3,,Wajib,2,C+
+39,MMM1302,"Pengantar Teori Permainan
+ Kelas: MIA A",3,,Pilihan,1,A-
+40,MMM2309,"Sistem Dinamik
+ Kelas: MAT",3,,Pilihan,1,B-
+41,MMM2314,"Riset Operasi B
+ Kelas: MAT",3,,Pilihan,1,A-
+42,MMM3313,"Matematika Biologi
+ Kelas: MAT",3,,Pilihan,1,B
+43,MMM3309,"Pengantar Teori Optimisasi
+ Kelas: MAT",3,,Pilihan,1,B
+44,UNU222001,"KKN-PPM
+ Kelas: MAT",4,MKU/MKDU,Wajib,1,A
+45,UNU222004,"Penerapan Manajemen Pengetahuan
+ Kelas: MAT",2,,Wajib,1,A
+46,UNU222002,"Komunikasi Masyarakat
+ Kelas: MAT",2,MKU/MKDU,Wajib,1,A
+47,MMM2201,"Pengantar Struktur Aljabar II
+ Kelas: MAT B",3,,Wajib,2,C+
+48,MMM4091,"Tugas Akhir I
+ Kelas: MAT",3,,Wajib,1,A
+49,MMM1101,"Kalkulus I
+ Kelas: KAL D",3,,Wajib,1,B
+50,MMM3310,"Pengantar Teori Sistem
+ Kelas: MAT",3,,Pilihan,1,A/B
+51,MMM3404,"Komputasi Permasalahan Invers
+ Kelas: MAT",3,,Pilihan,1,A/B
+52,MMM2206,"Pengantar Teori Graf
+ Kelas: MAT",3,,Pilihan,1,C
+53,TIF215212,"Transformasi Digital
+ Kelas: MKLD",3,,Pilihan,1,A
+54,MMM4092,"Tugas Akhir II
+ Kelas: MAT",6,,Wajib,1,A
