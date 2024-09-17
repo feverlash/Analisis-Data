@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 st.set_page_config(
@@ -12,7 +13,7 @@ st.set_page_config(
 url = 'https://raw.githubusercontent.com/feverlash/Analisis-Data/1b784470df03a8e53000ea6a7393bf2fbafc7919/Bike-sharing-dataset/cleaned_day.csv'
 data = pd.read_csv(url)
 
-#Fungsi 1
+# Function 1
 def visualize_season_counts(data):
     data['season'] = data['season'].map({
         'Spring': 'Spring',
@@ -23,108 +24,89 @@ def visualize_season_counts(data):
 
     season_counts = data.groupby('season')['total_rental'].sum().reset_index()
 
-    color_map = {'Spring': '#4CAF50', 
-                 'Summer': '#FFC107',  
-                 'Fall': '#FF5722', 
-                 'Winter': '#2196F3'}
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='season', y='total_rental', data=season_counts, palette='viridis')
+    plt.title('Total Jumlah Penyewaan Sepeda Berdasarkan Musim')
+    plt.xlabel('Musim')
+    plt.ylabel('Total Penyewaan Sepeda')
+    st.pyplot(plt)
 
-    fig = px.bar(season_counts, x='season', y='total_rental', 
-                 title='Total Jumlah Penyewaan Sepeda Berdasarkan Musim',
-                 labels={'season': 'Musim', 'total_rental': 'Total Penyewaan Sepeda'},
-                 color='season', color_discrete_map=color_map)
-
-    fig.update_xaxes(title_text='Musim')
-    fig.update_yaxes(title_text='Total Penyewaan Sepeda')
-    st.plotly_chart(fig)
-
-#Fungsi 2
+# Function 2
 def visualize_year_tren(data):
-    data['month'] = pd.Categorical(data['month'], categories=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], ordered=True)
+    data['month'] = pd.Categorical(data['month'], categories=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], ordered=True)
     
-    monthly_counts = data.groupby(by=["month","year"]).agg({"total_rental": "sum"}).reset_index()
+    monthly_counts = data.groupby(by=["month", "year"]).agg({"total_rental": "sum"}).reset_index()
 
-    fig = px.line(title="Jumlah sepeda yang disewakan berdasarkan Bulan dan Tahun",
-                  labels={"month": "Bulan", "total_rental": "Total Penyewaan Sepeda", "year": "Tahun"},
-                  markers=False)
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=monthly_counts, x='month', y='total_rental', hue='year', marker='o')
+    plt.title("Jumlah sepeda yang disewakan berdasarkan Bulan dan Tahun")
+    plt.xlabel('Bulan')
+    plt.ylabel('Total Penyewaan Sepeda')
+    st.pyplot(plt)
 
-    fig.add_scatter(x=monthly_counts[monthly_counts['year']==0]['month'], 
-                        y=monthly_counts[monthly_counts['year']==0]['total_rental'],
-                        mode='lines', name='2011', marker=dict(color='blue'))
-    
-    fig.add_scatter(x=monthly_counts[monthly_counts['year']==1]['month'], 
-                        y=monthly_counts[monthly_counts['year']==1]['total_rental'],
-                        mode='lines', name='2012', marker=dict(color='green'))
-
-    fig.update_layout(xaxis_title=None, yaxis_title=None, legend_title="Tahun",
-                      width=800, height=500)
-    
-    st.plotly_chart(fig)
-
-
-
-#Fungsi 3
+# Function 3
 def visualize_weather_counts(data):
-    # Menghitung jumlah penyewaan sepeda berdasarkan workingday
     bike_rentals_per_weather = data.groupby('weather_cond')['total_rental'].sum().reset_index()
     bike_rentals_per_weather.columns = ['Weather Situation', 'Total Rentals']
-    
-    fig = px.bar(bike_rentals_per_weather, x='Weather Situation', y='Total Rentals', 
-                 title='Jumlah Penyewaan Sepeda Berdasarkan Kondisi Cuaca', 
-                 labels={'Weather Situation': 'Kondisi Cuaca', 'Jumlah Sewa Harian': 'Jumlah Penyewaan Sepeda'},
-                 color='Weather Situation',
-                 color_discrete_sequence=px.colors.qualitative.Plotly)  # Specify discrete colors
-    
-    fig.update_xaxes(title_text='Kondisi Cuaca')
-    fig.update_yaxes(title_text='Jumlah Penyewaan Sepeda')
-    fig.update_xaxes(tickvals=[1, 2, 3], ticktext=['1', '2', '3'])
-    st.plotly_chart(fig)
 
-#Fungsi 4
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='Weather Situation', y='Total Rentals', data=bike_rentals_per_weather, palette='coolwarm')
+    plt.title('Jumlah Penyewaan Sepeda Berdasarkan Kondisi Cuaca')
+    plt.xlabel('Kondisi Cuaca')
+    plt.ylabel('Jumlah Penyewaan Sepeda')
+    st.pyplot(plt)
+
+# Function 4
 def visualize_workingday_counts(data):
     workingday_counts = data.groupby('workingday')['total_rental'].sum().reset_index()
     workingday_counts.columns = ['Working Day', 'Counts']
     workingday_counts['Working Day'] = workingday_counts['Working Day'].map({0: 'Hari Libur', 1: 'Hari Kerja'})
     
-    fig = px.bar(workingday_counts, x='Working Day', y='Counts', 
-                 title='Jumlah Penyewaan Sepeda Berdasarkan Hari Kerja dan Hari Libur', 
-                 labels={'Working Day': 'Hari', 'Counts': 'Jumlah Penyewaan Sepeda'},
-                 color='Working Day', color_discrete_sequence=px.colors.qualitative.Plotly)
-    fig.update_xaxes(title_text='Hari Kerja / Hari Libur')
-    fig.update_yaxes(title_text='Jumlah Penyewaan Sepeda')
-    st.plotly_chart(fig)
+    plt.figure(figsize=(10, 6))
+    sns.barplot(x='Working Day', y='Counts', data=workingday_counts, palette='muted')
+    plt.title('Jumlah Penyewaan Sepeda Berdasarkan Hari Kerja dan Hari Libur')
+    plt.xlabel('Hari Kerja / Hari Libur')
+    plt.ylabel('Jumlah Penyewaan Sepeda')
+    st.pyplot(plt)
 
-#Fungsi 5
-
+# Function 5
 def visualize_timeseries(data):
-    # Set 'dateday' as the index of the DataFrame
     data['dateday'] = pd.to_datetime(data['dateday'])
     data.set_index('dateday', inplace=True)
 
     y = data['total_rental']
-
-    # Decompose the time series
     decomposition = sm.tsa.seasonal_decompose(y, model='additive')
-    
-    # Display the plots using Streamlit based on checkbox selection
-    color_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728']
+
     if not (show_original or show_trend or show_seasonal or show_residual):
         st.write(":heavy_exclamation_mark: Silahkan pilih salah satu checkbox untuk menampilkan grafik :heavy_exclamation_mark:")
     else:
+        plt.figure(figsize=(12, 8))
         if show_original:
-            original_trace = px.line(x=y.index, y=y, title='Original', labels={'x': 'Date', 'y': 'Total Rental'}, color_discrete_sequence=[color_palette[0]])
-            st.plotly_chart(original_trace)
+            plt.subplot(411)
+            plt.plot(y, label='Original', color='blue')
+            plt.title('Original')
+            plt.legend()
 
         if show_trend:
-            trend_trace = px.line(x=y.index, y=decomposition.trend, title='Trend', labels={'x': 'Date', 'y': 'Trend'}, color_discrete_sequence=[color_palette[1]])
-            st.plotly_chart(trend_trace)
+            plt.subplot(412)
+            plt.plot(decomposition.trend, label='Trend', color='orange')
+            plt.title('Trend')
+            plt.legend()
 
         if show_seasonal:
-            seasonal_trace = px.line(x=y.index, y=decomposition.seasonal, title='Seasonal', labels={'x': 'Date', 'y': 'Seasonal'}, color_discrete_sequence=[color_palette[2]])
-            st.plotly_chart(seasonal_trace)
+            plt.subplot(413)
+            plt.plot(decomposition.seasonal, label='Seasonal', color='green')
+            plt.title('Seasonal')
+            plt.legend()
 
         if show_residual:
-            residual_trace = px.line(x=y.index, y=decomposition.resid, title='Residual', labels={'x': 'Date', 'y': 'Residual'}, color_discrete_sequence=[color_palette[3]])
-            st.plotly_chart(residual_trace)
+            plt.subplot(414)
+            plt.plot(decomposition.resid, label='Residual', color='red')
+            plt.title('Residual')
+            plt.legend()
+
+        plt.tight_layout()
+        st.pyplot(plt)
 
 # Sidebar with options
 st.sidebar.title(':computer: :thinking_face: :question:')
