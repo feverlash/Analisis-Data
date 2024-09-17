@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import seaborn as sns
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
@@ -25,7 +24,7 @@ def visualize_season_counts(data):
     season_counts = data.groupby('season')['total_rental'].sum().reset_index()
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(x='season', y='total_rental', data=season_counts, palette='viridis')
+    plt.bar(season_counts['season'], season_counts['total_rental'], color=['#4CAF50', '#FFC107', '#FF5722', '#2196F3'])
     plt.title('Total Jumlah Penyewaan Sepeda Berdasarkan Musim')
     plt.xlabel('Musim')
     plt.ylabel('Total Penyewaan Sepeda')
@@ -38,10 +37,14 @@ def visualize_year_tren(data):
     monthly_counts = data.groupby(by=["month", "year"]).agg({"total_rental": "sum"}).reset_index()
 
     plt.figure(figsize=(10, 6))
-    sns.lineplot(data=monthly_counts, x='month', y='total_rental', hue='year', marker='o')
+    for year in monthly_counts['year'].unique():
+        plt.plot(monthly_counts[monthly_counts['year'] == year]['month'], 
+                 monthly_counts[monthly_counts['year'] == year]['total_rental'], 
+                 marker='o', label=f'{"2011" if year == 0 else "2012"}')
     plt.title("Jumlah sepeda yang disewakan berdasarkan Bulan dan Tahun")
     plt.xlabel('Bulan')
     plt.ylabel('Total Penyewaan Sepeda')
+    plt.legend(title='Tahun')
     st.pyplot(plt)
 
 # Function 3
@@ -50,10 +53,11 @@ def visualize_weather_counts(data):
     bike_rentals_per_weather.columns = ['Weather Situation', 'Total Rentals']
 
     plt.figure(figsize=(10, 6))
-    sns.barplot(x='Weather Situation', y='Total Rentals', data=bike_rentals_per_weather, palette='coolwarm')
+    plt.bar(bike_rentals_per_weather['Weather Situation'], bike_rentals_per_weather['Total Rentals'], color=['#1f77b4', '#ff7f0e', '#2ca02c'])
     plt.title('Jumlah Penyewaan Sepeda Berdasarkan Kondisi Cuaca')
     plt.xlabel('Kondisi Cuaca')
     plt.ylabel('Jumlah Penyewaan Sepeda')
+    plt.xticks(ticks=[0, 1, 2], labels=['1', '2', '3'])
     st.pyplot(plt)
 
 # Function 4
@@ -63,7 +67,7 @@ def visualize_workingday_counts(data):
     workingday_counts['Working Day'] = workingday_counts['Working Day'].map({0: 'Hari Libur', 1: 'Hari Kerja'})
     
     plt.figure(figsize=(10, 6))
-    sns.barplot(x='Working Day', y='Counts', data=workingday_counts, palette='muted')
+    plt.bar(workingday_counts['Working Day'], workingday_counts['Counts'], color=['#e377c2', '#17becf'])
     plt.title('Jumlah Penyewaan Sepeda Berdasarkan Hari Kerja dan Hari Libur')
     plt.xlabel('Hari Kerja / Hari Libur')
     plt.ylabel('Jumlah Penyewaan Sepeda')
