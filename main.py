@@ -82,29 +82,25 @@ def visualize_timeseries(data):
     decomposition = sm.tsa.seasonal_decompose(y, model='additive')
 
     plt.figure(figsize=(12, 8))
-    if show_original:
-        plt.subplot(411)
-        plt.plot(y, label='Original', color='blue')
-        plt.title('Original')
-        plt.legend()
+    plt.subplot(411)
+    plt.plot(y, label='Original', color='blue')
+    plt.title('Original')
+    plt.legend()
 
-    if show_trend:
-        plt.subplot(412)
-        plt.plot(decomposition.trend, label='Trend', color='orange')
-        plt.title('Trend')
-        plt.legend()
+    plt.subplot(412)
+    plt.plot(decomposition.trend, label='Trend', color='orange')
+    plt.title('Trend')
+    plt.legend()
 
-    if show_seasonal:
-        plt.subplot(413)
-        plt.plot(decomposition.seasonal, label='Seasonal', color='green')
-        plt.title('Seasonal')
-        plt.legend()
-
-    if show_residual:
-        plt.subplot(414)
-        plt.plot(decomposition.resid, label='Residual', color='red')
-        plt.title('Residual')
-        plt.legend()
+    plt.subplot(413)
+    plt.plot(decomposition.seasonal, label='Seasonal', color='green')
+    plt.title('Seasonal')
+    plt.legend()
+    
+    plt.subplot(414)
+    plt.plot(decomposition.resid, label='Residual', color='red')
+    plt.title('Residual')
+    plt.legend()
 
     plt.tight_layout()
     st.pyplot(plt)
