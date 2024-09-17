@@ -81,36 +81,33 @@ def visualize_timeseries(data):
     y = data['total_rental']
     decomposition = sm.tsa.seasonal_decompose(y, model='additive')
 
-    if not (show_original or show_trend or show_seasonal or show_residual):
-        st.write(":heavy_exclamation_mark: Silahkan pilih salah satu checkbox untuk menampilkan grafik :heavy_exclamation_mark:")
-    else:
-        plt.figure(figsize=(12, 8))
-        if show_original:
-            plt.subplot(411)
-            plt.plot(y, label='Original', color='blue')
-            plt.title('Original')
-            plt.legend()
+    plt.figure(figsize=(12, 8))
+    if show_original:
+        plt.subplot(411)
+        plt.plot(y, label='Original', color='blue')
+        plt.title('Original')
+        plt.legend()
 
-        if show_trend:
-            plt.subplot(412)
-            plt.plot(decomposition.trend, label='Trend', color='orange')
-            plt.title('Trend')
-            plt.legend()
+    if show_trend:
+        plt.subplot(412)
+        plt.plot(decomposition.trend, label='Trend', color='orange')
+        plt.title('Trend')
+        plt.legend()
 
-        if show_seasonal:
-            plt.subplot(413)
-            plt.plot(decomposition.seasonal, label='Seasonal', color='green')
-            plt.title('Seasonal')
-            plt.legend()
+    if show_seasonal:
+        plt.subplot(413)
+        plt.plot(decomposition.seasonal, label='Seasonal', color='green')
+        plt.title('Seasonal')
+        plt.legend()
 
-        if show_residual:
-            plt.subplot(414)
-            plt.plot(decomposition.resid, label='Residual', color='red')
-            plt.title('Residual')
-            plt.legend()
+    if show_residual:
+        plt.subplot(414)
+        plt.plot(decomposition.resid, label='Residual', color='red')
+        plt.title('Residual')
+        plt.legend()
 
-        plt.tight_layout()
-        st.pyplot(plt)
+    plt.tight_layout()
+    st.pyplot(plt)
 
 # Sidebar with options
 st.sidebar.title(':computer: :thinking_face: :question:')
@@ -135,8 +132,4 @@ elif question == 'Pertanyaan 4':
     visualize_workingday_counts(data)
 elif question == 'Analisis Lanjutan':
     st.write("### Analisis lanjutan time series analysis")
-    show_original = st.sidebar.checkbox('Show Original', value=True)
-    show_trend = st.sidebar.checkbox('Show Trend', value=True)
-    show_seasonal = st.sidebar.checkbox('Show Seasonal', value=True)
-    show_residual = st.sidebar.checkbox('Show Residual', value=True)
     visualize_timeseries(data)
